@@ -1,9 +1,3 @@
-/* ============================================================
-   QUOTE VAULT — STYLE.CSS
-   Aesthetic: Deep ink editorial with cream gold accents
-   Fonts: Cormorant Garamond (quotes) + Outfit (UI)
-   ============================================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
 
 /* ---------- Variables ---------- */
@@ -93,9 +87,7 @@ body {
   padding: 0 20px 80px;
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+   /* HEADER */
 .header {
   display: flex;
   align-items: center;
@@ -126,9 +118,7 @@ body {
   letter-spacing: .5px;
 }
 
-/* ============================================================
-   QUOTE STAGE
-   ============================================================ */
+   /* QUOTE STAGE */
 .quote-stage {
   display: flex;
   flex-direction: column;
@@ -384,9 +374,7 @@ blockquote {
   }
 }
 
-/* ============================================================
-   ADD QUOTE SECTION
-   ============================================================ */
+   /* ADD QUOTE SECTION */
 .add-section {
   margin-bottom: 48px;
 }
@@ -512,9 +500,7 @@ input:focus {
   animation: spin .7s linear infinite;
 }
 
-/* ============================================================
-   QUOTES LIST
-   ============================================================ */
+
 .list-section {}
 
 .list-header {
@@ -677,9 +663,7 @@ input:focus {
   line-height: 1.7;
 }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
+   /* TOAST */
 .toast {
   position: fixed;
   bottom: 28px;
@@ -725,9 +709,7 @@ input:focus {
   color: var(--gold-light);
 }
 
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
+   /* ANIMATIONS */
 @keyframes fadeSlideUp {
   from {
     opacity: 0;
@@ -740,9 +722,7 @@ input:focus {
   }
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+   /* RESPONSIVE */
 @media (max-width: 520px) {
   .quote-card {
     padding: 28px 22px;
@@ -993,3 +973,5 @@ input:focus {
   color: rgba(201, 168, 76, .5);
   letter-spacing: .5px;
 }
+
+ /* © 2026 Hassan Javed. */

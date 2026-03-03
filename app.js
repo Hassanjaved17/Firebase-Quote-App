@@ -15,9 +15,7 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ============================================================
 // STATE
-// ============================================================
 let allQuotes   = [];
 let currentIndex = -1;
 let activeFilter = "all";
@@ -36,9 +34,7 @@ const SEED_QUOTES = [
     { text: "Two things are infinite: the universe and human stupidity.", author: "Albert Einstein", category: "Humor", likes: 0 },
 ];
 
-// ============================================================
 // DOM REFS
-// ============================================================
 const quoteLoading  = document.getElementById("quote-loading");
 const quoteContent  = document.getElementById("quote-content");
 const quoteEmpty    = document.getElementById("quote-empty");
@@ -62,9 +58,7 @@ const searchInput   = document.getElementById("search-input");
 const searchClear   = document.getElementById("search-clear");
 const searchInfo    = document.getElementById("search-info");
 
-// ============================================================
 // TOAST
-// ============================================================
 function showToast(msg, type = "info") {
     const toast = document.getElementById("toast");
     toast.textContent = msg;
@@ -72,9 +66,7 @@ function showToast(msg, type = "info") {
     setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-// ============================================================
 // LOADING HELPER
-// ============================================================
 function setLoading(btn, isLoading, originalHTML) {
     if (isLoading) {
         btn.disabled  = true;
@@ -85,9 +77,7 @@ function setLoading(btn, isLoading, originalHTML) {
     }
 }
 
-// ============================================================
 // DISPLAY QUOTE IN MAIN CARD
-// ============================================================
 function displayQuote(quote, index) {
     currentIndex = index;
 
@@ -115,9 +105,7 @@ function showEmpty() {
     quoteEmpty.style.display   = "flex";
 }
 
-// ============================================================
 // PICK RANDOM QUOTE
-// ============================================================
 function pickRandom() {
     const pool = activeFilter === "liked"
         ? allQuotes.filter(q => q.liked)
@@ -139,10 +127,7 @@ function pickRandom() {
     const activeItem = document.querySelector(`[data-id="${quote.id}"]`);
     if (activeItem) activeItem.classList.add("active");
 }
-
-// ============================================================
 // STATS BAR
-// ============================================================
 function updateStats() {
     const total      = allQuotes.length;
     const liked      = allQuotes.filter(q => q.liked).length;
@@ -173,9 +158,7 @@ function animateCount(id, target) {
     }, delay);
 }
 
-// ============================================================
 // SEARCH
-// ============================================================
 searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
     searchClear.style.display = searchQuery ? "flex" : "none";
@@ -198,9 +181,7 @@ function highlight(text, query) {
     return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark>$1</mark>");
 }
 
-// ============================================================
 // SAVE IMAGE (html2canvas)
-// ============================================================
 document.getElementById("share-btn").addEventListener("click", async () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
@@ -234,9 +215,7 @@ document.getElementById("share-btn").addEventListener("click", async () => {
     }
 });
 
-// ============================================================
 // REAL-TIME LISTENER
-// ============================================================
 function startRealtimeListener() {
     const q = query(collection(db, COLLECTION), orderBy("createdAt", "desc"));
 
@@ -254,9 +233,7 @@ function startRealtimeListener() {
     });
 }
 
-// ============================================================
 // SEED IF EMPTY
-// ============================================================
 async function seedIfEmpty() {
     const snapshot = await getDocs(collection(db, COLLECTION));
     if (!snapshot.empty) return;
@@ -268,9 +245,7 @@ async function seedIfEmpty() {
     );
 }
 
-// ============================================================
 // RENDER LIST
-// ============================================================
 function renderList() {
     // Step 1: filter by liked tab
     const base = activeFilter === "liked"
@@ -354,10 +329,7 @@ function renderList() {
         });
     });
 }
-
-// ============================================================
 // ADD QUOTE
-// ============================================================
 submitBtn.addEventListener("click", async () => {
     const text     = inputText.value.trim();
     const author   = inputAuthor.value.trim();
@@ -394,9 +366,7 @@ submitBtn.addEventListener("click", async () => {
     }
 });
 
-// ============================================================
 // DELETE QUOTE
-// ============================================================
 async function deleteQuote(id) {
     try {
         await deleteDoc(doc(db, COLLECTION, id));
@@ -416,9 +386,7 @@ deleteBtn.addEventListener("click", () => {
     if (quote) deleteQuote(quote.id);
 });
 
-// ============================================================
 // TOGGLE LIKE
-// ============================================================
 async function toggleLike(id) {
     const quote = allQuotes.find(q => q.id === id);
     if (!quote) return;
@@ -445,9 +413,7 @@ likeBtn.addEventListener("click", () => {
     if (quote) toggleLike(quote.id);
 });
 
-// ============================================================
 // COPY QUOTE
-// ============================================================
 copyBtn.addEventListener("click", () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
@@ -460,25 +426,19 @@ copyBtn.addEventListener("click", () => {
     });
 });
 
-// ============================================================
 // NEW QUOTE BUTTON
-// ============================================================
 newQuoteBtn.addEventListener("click", () => {
     newQuoteBtn.classList.add("spinning");
     setTimeout(() => newQuoteBtn.classList.remove("spinning"), 600);
     pickRandom();
 });
 
-// ============================================================
 // CHAR COUNTER
-// ============================================================
 inputText.addEventListener("input", () => {
     charCurrent.textContent = inputText.value.length;
 });
 
-// ============================================================
 // FILTER BUTTONS
-// ============================================================
 filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         filterBtns.forEach(b => b.classList.remove("active"));
@@ -489,9 +449,7 @@ filterBtns.forEach(btn => {
     });
 });
 
-// ============================================================
 // INIT
-// ============================================================
 (async () => {
     await seedIfEmpty();
     startRealtimeListener();
