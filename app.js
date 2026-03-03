@@ -15,9 +15,9 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ============================================================
+
 // STATE
-// ============================================================
+
 let allQuotes = [];       // all quotes from Firestore
 let currentIndex = -1;       // index of displayed quote
 let activeFilter = "all";    // "all" | "liked"
@@ -36,9 +36,9 @@ const SEED_QUOTES = [
     { text: "Two things are infinite: the universe and human stupidity.", author: "Albert Einstein", category: "Humor", likes: 0 },
 ];
 
-// ============================================================
+
 // DOM REFS
-// ============================================================
+
 const quoteLoading = document.getElementById("quote-loading");
 const quoteContent = document.getElementById("quote-content");
 const quoteEmpty = document.getElementById("quote-empty");
@@ -61,9 +61,9 @@ const submitBtn = document.getElementById("submit-btn");
 const quotesList = document.getElementById("quotes-list");
 const filterBtns = document.querySelectorAll(".filter-btn");
 
-// ============================================================
-// TOAST
-// ============================================================
+
+// TOAST HELPER
+
 function showToast(msg, type = "info") {
     const toast = document.getElementById("toast");
     toast.textContent = msg;
@@ -71,9 +71,9 @@ function showToast(msg, type = "info") {
     setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-// ============================================================
+
 // SPINNER HELPER
-// ============================================================
+
 function setLoading(btn, isLoading, originalHTML) {
     if (isLoading) {
         btn.disabled = true;
@@ -84,9 +84,9 @@ function setLoading(btn, isLoading, originalHTML) {
     }
 }
 
-// ============================================================
+
 // DISPLAY A QUOTE IN THE MAIN CARD
-// ============================================================
+
 function displayQuote(quote, index) {
     currentIndex = index;
 
@@ -114,9 +114,8 @@ function showEmpty() {
     quoteEmpty.style.display = "flex";
 }
 
-// ============================================================
+
 // PICK A RANDOM QUOTE (different from current)
-// ============================================================
 function pickRandom() {
     const filtered = activeFilter === "liked"
         ? allQuotes.filter(q => q.liked)
@@ -141,9 +140,7 @@ function pickRandom() {
     if (activeItem) activeItem.classList.add("active");
 }
 
-// ============================================================
-// REAL-TIME LISTENER — Firestore onSnapshot
-// ============================================================
+// REAL-TIME LISTENER — Firestore onSnapshot allows us to listen to real-time updates in the "quotes" collection. Whenever a quote is added, deleted, or updated, our UI will automatically reflect those changes without needing a page refresh.
 function startRealtimeListener() {
     const q = query(collection(db, COLLECTION), orderBy("createdAt", "desc"));
 
@@ -162,9 +159,9 @@ function startRealtimeListener() {
     });
 }
 
-// ============================================================
+
 // SEED FIRESTORE IF EMPTY
-// ============================================================
+
 async function seedIfEmpty() {
     const snapshot = await getDocs(collection(db, COLLECTION));
     if (!snapshot.empty) return;
@@ -175,9 +172,7 @@ async function seedIfEmpty() {
     await Promise.all(promises);
 }
 
-// ============================================================
 // RENDER QUOTES LIST
-// ============================================================
 function renderList() {
     const toShow = activeFilter === "liked"
         ? allQuotes.filter(q => q.liked)
@@ -244,9 +239,9 @@ function renderList() {
     });
 }
 
-// ============================================================
+
 // ADD QUOTE
-// ============================================================
+
 submitBtn.addEventListener("click", async () => {
     const text = inputText.value.trim();
     const author = inputAuthor.value.trim();
@@ -275,7 +270,7 @@ submitBtn.addEventListener("click", async () => {
         inputAuthor.value = "";
         inputCategory.value = "";
         charCurrent.textContent = "0";
-        showToast("Quote added to the vault! ✨", "success");
+        showToast("Quote added to the vault! ", "success");
     } catch (err) {
         console.error("Add error:", err);
         showToast("Failed to add quote. Try again.", "error");
@@ -284,9 +279,9 @@ submitBtn.addEventListener("click", async () => {
     }
 });
 
-// ============================================================
+
 // DELETE QUOTE
-// ============================================================
+
 async function deleteQuote(id) {
     try {
         await deleteDoc(doc(db, COLLECTION, id));
@@ -309,9 +304,9 @@ deleteBtn.addEventListener("click", () => {
     if (quote) deleteQuote(quote.id);
 });
 
-// ============================================================
+
 // TOGGLE LIKE
-// ============================================================
+
 async function toggleLike(id) {
     const quote = allQuotes.find(q => q.id === id);
     if (!quote) return;
@@ -339,9 +334,7 @@ likeBtn.addEventListener("click", () => {
     if (quote) toggleLike(quote.id);
 });
 
-// ============================================================
 // COPY QUOTE
-// ============================================================
 copyBtn.addEventListener("click", () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
@@ -355,25 +348,19 @@ copyBtn.addEventListener("click", () => {
     });
 });
 
-// ============================================================
 // NEW RANDOM QUOTE BUTTON
-// ============================================================
 newQuoteBtn.addEventListener("click", () => {
     newQuoteBtn.classList.add("spinning");
     setTimeout(() => newQuoteBtn.classList.remove("spinning"), 600);
     pickRandom();
 });
 
-// ============================================================
 // CHAR COUNTER
-// ============================================================
 inputText.addEventListener("input", () => {
     charCurrent.textContent = inputText.value.length;
 });
 
-// ============================================================
 // FILTER BUTTONS
-// ============================================================
 filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         filterBtns.forEach(b => b.classList.remove("active"));
@@ -384,10 +371,10 @@ filterBtns.forEach(btn => {
     });
 });
 
-// ============================================================
 // INIT
-// ============================================================
 (async () => {
     await seedIfEmpty();
     startRealtimeListener();
 })();
+
+// © 2026 Hassan Javed.
