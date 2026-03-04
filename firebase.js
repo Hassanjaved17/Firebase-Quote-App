@@ -14,4 +14,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-// © 2026 Hassan Javed.
+// ============================================================
+//  QUOTE VAULT v2
+//  Author  : Hassan Javed
+//  GitHub  : github.com/hassan-javed  (your actual username)
+//  Built   : March 2026
+//  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
+//  © 2026 Hassan Javed — All Rights Reserved
+// ============================================================

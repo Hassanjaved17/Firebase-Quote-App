@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet">
 </head>
 
@@ -25,18 +25,26 @@
     <!-- ── Header ── -->
     <header class="header">
       <div class="header-logo">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path
-            d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-          <path
-            d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
-        </svg>
+        <div class="header-logo-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+            <path
+              d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
+          </svg>
+        </div>
         Quote Vault
       </div>
-      <div class="header-count">
-        <span id="quote-count">—</span> quotes
+      <div class="header-right">
+        <span class="header-issue">Vol. I — 2026</span>
+        <span class="header-count"><span id="quote-count">0</span> entries</span>
       </div>
     </header>
+
+    <div class="header-strip">
+      <span class="header-strip-tag">Wisdom · Motivation · Life · Design · Humor</span>
+      <div class="header-strip-accent"></div>
+    </div>
 
     <!-- Stats Bar -->
     <div class="stats-bar">
@@ -198,6 +206,16 @@
       </div>
     </section>
 
+    <footer class="site-footer">
+      <div class="footer-left">
+        <span class="footer-copy">© 2026 <strong>Hassan Javed</strong></span>
+        <span class="footer-rights">All rights reserved. Unauthorized reproduction prohibited.</span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-badge">Quote Vault v2</span>
+        <div class="footer-dot"></div>
+      </div>
+    </footer>
   </div>
 
   <div id="share-card-wrap">
@@ -210,6 +228,8 @@
       </div>
     </div>
   </div>
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- Toast -->
@@ -220,4 +240,11 @@
 
 </html>
 
-<!-- // © 2026 Hassan Javed. -->
+<!-- ============================================================
+  QUOTE VAULT v2
+  Author  : Hassan Javed
+  GitHub  : github.com/hassan-javed  (your actual username)
+  Built   : March 2026
+  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
+  © 2026 Hassan Javed — All Rights Reserved
+ ============================================================ -->

@@ -16,10 +16,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // STATE
-let allQuotes   = [];
+let allQuotes = [];
 let currentIndex = -1;
 let activeFilter = "all";
-let searchQuery  = "";
+let searchQuery = "";
+let typewriterTimer = null;
 
 const COLLECTION = "quotes";
 
@@ -35,28 +36,28 @@ const SEED_QUOTES = [
 ];
 
 // DOM REFS
-const quoteLoading  = document.getElementById("quote-loading");
-const quoteContent  = document.getElementById("quote-content");
-const quoteEmpty    = document.getElementById("quote-empty");
-const quoteText     = document.getElementById("quote-text");
-const quoteAuthor   = document.getElementById("quote-author");
+const quoteLoading = document.getElementById("quote-loading");
+const quoteContent = document.getElementById("quote-content");
+const quoteEmpty = document.getElementById("quote-empty");
+const quoteText = document.getElementById("quote-text");
+const quoteAuthor = document.getElementById("quote-author");
 const quoteCategory = document.getElementById("quote-category");
-const likeBtn       = document.getElementById("like-btn");
-const likeCount     = document.getElementById("like-count");
-const copyBtn       = document.getElementById("copy-btn");
-const deleteBtn     = document.getElementById("delete-btn");
-const newQuoteBtn   = document.getElementById("new-quote-btn");
-const quoteCount    = document.getElementById("quote-count");
-const inputText     = document.getElementById("input-text");
-const inputAuthor   = document.getElementById("input-author");
+const likeBtn = document.getElementById("like-btn");
+const likeCount = document.getElementById("like-count");
+const copyBtn = document.getElementById("copy-btn");
+const deleteBtn = document.getElementById("delete-btn");
+const newQuoteBtn = document.getElementById("new-quote-btn");
+const quoteCount = document.getElementById("quote-count");
+const inputText = document.getElementById("input-text");
+const inputAuthor = document.getElementById("input-author");
 const inputCategory = document.getElementById("input-category");
-const charCurrent   = document.getElementById("char-current");
-const submitBtn     = document.getElementById("submit-btn");
-const quotesList    = document.getElementById("quotes-list");
-const filterBtns    = document.querySelectorAll(".filter-btn");
-const searchInput   = document.getElementById("search-input");
-const searchClear   = document.getElementById("search-clear");
-const searchInfo    = document.getElementById("search-info");
+const charCurrent = document.getElementById("char-current");
+const submitBtn = document.getElementById("submit-btn");
+const quotesList = document.getElementById("quotes-list");
+const filterBtns = document.querySelectorAll(".filter-btn");
+const searchInput = document.getElementById("search-input");
+const searchClear = document.getElementById("search-clear");
+const searchInfo = document.getElementById("search-info");
 
 // TOAST
 function showToast(msg, type = "info") {
@@ -69,10 +70,10 @@ function showToast(msg, type = "info") {
 // LOADING HELPER
 function setLoading(btn, isLoading, originalHTML) {
     if (isLoading) {
-        btn.disabled  = true;
+        btn.disabled = true;
         btn.innerHTML = `<span class="spinner"></span> Loading...`;
     } else {
-        btn.disabled  = false;
+        btn.disabled = false;
         btn.innerHTML = originalHTML;
     }
 }
@@ -82,27 +83,56 @@ function displayQuote(quote, index) {
     currentIndex = index;
 
     quoteLoading.style.display = "none";
-    quoteEmpty.style.display   = "none";
+    quoteEmpty.style.display = "none";
     quoteContent.style.display = "flex";
 
-    // Retrigger animation
+    // Retrigger card animation
     quoteContent.style.animation = "none";
     quoteContent.offsetHeight;
     quoteContent.style.animation = "";
 
-    quoteText.textContent     = quote.text;
-    quoteAuthor.textContent   = `— ${quote.author || "Unknown"}`;
+    // Update meta instantly
+    quoteAuthor.textContent = `— ${quote.author || "Unknown"}`;
     quoteCategory.textContent = quote.category || "";
     quoteCategory.style.display = quote.category ? "inline-block" : "none";
-
     likeCount.textContent = quote.likes || 0;
     likeBtn.classList.toggle("liked", !!quote.liked);
+
+    // Typewriter on quote text
+    typewriterEffect(quoteText, quote.text);
 }
+
+function typewriterEffect(el, text) {
+    // Cancel any previous typewriter still running
+    if (typewriterTimer) {
+        clearInterval(typewriterTimer);
+        typewriterTimer = null;
+    }
+
+    el.textContent = "";
+    el.classList.add("typing");
+
+    let i = 0;
+    // Speed: longer quotes type faster so it never feels sluggish
+    const speed = Math.max(18, Math.min(40, Math.round(2400 / text.length)));
+
+    typewriterTimer = setInterval(() => {
+        el.textContent = text.slice(0, i + 1);
+        i++;
+        if (i >= text.length) {
+            clearInterval(typewriterTimer);
+            typewriterTimer = null;
+            // Remove blinking cursor after short pause
+            setTimeout(() => el.classList.remove("typing"), 800);
+        }
+    }, speed);
+}
+
 
 function showEmpty() {
     quoteLoading.style.display = "none";
     quoteContent.style.display = "none";
-    quoteEmpty.style.display   = "flex";
+    quoteEmpty.style.display = "flex";
 }
 
 // PICK RANDOM QUOTE
@@ -119,7 +149,7 @@ function pickRandom() {
         attempts++;
     } while (pool[idx].id === allQuotes[currentIndex]?.id && pool.length > 1 && attempts < 10);
 
-    const quote   = pool[idx];
+    const quote = pool[idx];
     const realIdx = allQuotes.findIndex(q => q.id === quote.id);
     displayQuote(quote, realIdx);
 
@@ -129,27 +159,27 @@ function pickRandom() {
 }
 // STATS BAR
 function updateStats() {
-    const total      = allQuotes.length;
-    const liked      = allQuotes.filter(q => q.liked).length;
+    const total = allQuotes.length;
+    const liked = allQuotes.filter(q => q.liked).length;
     const categories = new Set(allQuotes.map(q => q.category).filter(Boolean)).size;
-    const authors    = new Set(allQuotes.map(q => q.author).filter(Boolean)).size;
+    const authors = new Set(allQuotes.map(q => q.author).filter(Boolean)).size;
 
-    animateCount("stat-total",      total);
-    animateCount("stat-liked",      liked);
+    animateCount("stat-total", total);
+    animateCount("stat-liked", liked);
     animateCount("stat-categories", categories);
-    animateCount("stat-authors",    authors);
+    animateCount("stat-authors", authors);
     document.getElementById("quote-count").textContent = total;
 }
 
 function animateCount(id, target) {
-    const el   = document.getElementById(id);
+    const el = document.getElementById(id);
     const from = parseInt(el.textContent) || 0;
     if (from === target) return;
 
-    const step     = target > from ? 1 : -1;
-    const steps    = Math.abs(target - from);
-    const delay    = Math.max(400 / steps, 16);
-    let   current  = from;
+    const step = target > from ? 1 : -1;
+    const steps = Math.abs(target - from);
+    const delay = Math.max(400 / steps, 16);
+    let current = from;
 
     const interval = setInterval(() => {
         current += step;
@@ -162,15 +192,15 @@ function animateCount(id, target) {
 searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
     searchClear.style.display = searchQuery ? "flex" : "none";
-    searchInfo.style.display  = searchQuery ? "block" : "none";
+    searchInfo.style.display = searchQuery ? "block" : "none";
     renderList();
 });
 
 searchClear.addEventListener("click", () => {
-    searchInput.value         = "";
-    searchQuery               = "";
+    searchInput.value = "";
+    searchQuery = "";
     searchClear.style.display = "none";
-    searchInfo.style.display  = "none";
+    searchInfo.style.display = "none";
     renderList();
     searchInput.focus();
 });
@@ -186,31 +216,31 @@ document.getElementById("share-btn").addEventListener("click", async () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
 
-    const btn  = document.getElementById("share-btn");
+    const btn = document.getElementById("share-btn");
     const orig = btn.innerHTML;
-    btn.disabled  = true;
+    btn.disabled = true;
     btn.innerHTML = `<span class="spinner"></span> Saving...`;
 
-    document.getElementById("sc-text").textContent   = quote.text;
+    document.getElementById("sc-text").textContent = quote.text;
     document.getElementById("sc-author").textContent = `— ${quote.author || "Unknown"}`;
 
     try {
         const canvas = await html2canvas(document.getElementById("share-card"), {
-            backgroundColor: "#0a0b0f",
+            backgroundColor: "#060b14",
             scale: 2,
             useCORS: true,
             logging: false
         });
-        const link    = document.createElement("a");
+        const link = document.createElement("a");
         link.download = `quote-${Date.now()}.png`;
-        link.href     = canvas.toDataURL("image/png");
+        link.href = canvas.toDataURL("image/png");
         link.click();
         showToast("Image saved! ✨", "success");
     } catch (err) {
         console.error("Share error:", err);
         showToast("Failed to save image.", "error");
     } finally {
-        btn.disabled  = false;
+        btn.disabled = false;
         btn.innerHTML = orig;
     }
 });
@@ -256,9 +286,9 @@ function renderList() {
     const toShow = searchQuery
         ? base.filter(q =>
             q.text.toLowerCase().includes(searchQuery) ||
-            (q.author   || "").toLowerCase().includes(searchQuery) ||
+            (q.author || "").toLowerCase().includes(searchQuery) ||
             (q.category || "").toLowerCase().includes(searchQuery)
-          )
+        )
         : base;
 
     // Update search result info text
@@ -331,8 +361,8 @@ function renderList() {
 }
 // ADD QUOTE
 submitBtn.addEventListener("click", async () => {
-    const text     = inputText.value.trim();
-    const author   = inputAuthor.value.trim();
+    const text = inputText.value.trim();
+    const author = inputAuthor.value.trim();
     const category = inputCategory.value.trim();
 
     if (!text) {
@@ -347,15 +377,15 @@ submitBtn.addEventListener("click", async () => {
     try {
         await addDoc(collection(db, COLLECTION), {
             text,
-            author:    author || "Unknown",
-            category:  category || "",
-            likes:     0,
-            liked:     false,
+            author: author || "Unknown",
+            category: category || "",
+            likes: 0,
+            liked: false,
             createdAt: serverTimestamp()
         });
-        inputText.value         = "";
-        inputAuthor.value       = "";
-        inputCategory.value     = "";
+        inputText.value = "";
+        inputAuthor.value = "";
+        inputCategory.value = "";
         charCurrent.textContent = "0";
         showToast("Quote added to the vault! ✨", "success");
     } catch (err) {
@@ -455,4 +485,11 @@ filterBtns.forEach(btn => {
     startRealtimeListener();
 })();
 
-// © 2026 Hassan Javed.
+// ============================================================
+//  QUOTE VAULT v2
+//  Author  : Hassan Javed
+//  GitHub  : github.com/hassan-javed  (your actual username)
+//  Built   : March 2026
+//  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
+//  © 2026 Hassan Javed — All Rights Reserved
+// ============================================================
