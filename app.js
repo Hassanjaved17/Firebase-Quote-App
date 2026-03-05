@@ -1,11 +1,13 @@
-// ============================================================
-//  QUOTE VAULT v2 — APP.JS
-//  Author  : Hassan Javed
-//  Built   : March 2026
-//  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
-//  © 2026 Hassan Javed — All Rights Reserved
-// ============================================================
+//  ============================================================
+//   QUOTE VAULT v2
+//   Author  : Hassan Javed
+//   GitHub  : https://github.com/Hassanjaved17
+//   Built   : March 2026
+//   Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
+//   © 2026 Hassan Javed — All Rights Reserved
+//   ============================================================ 
 
+// Firebase imports
 import { db } from "./firebase.js";
 import {
     collection,
@@ -20,9 +22,7 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ============================================================
-// STATE
-// ============================================================
+// State variables
 let allQuotes = [];
 let currentIndex = -1;
 let activeFilter = "all";
@@ -31,7 +31,7 @@ let typewriterTimer = null;
 let editingId = null;
 
 const COLLECTION = "quotes";
-
+// Seed data
 const SEED_QUOTES = [
     { text: "The only way to do great work is to love what you do.", author: "Steve Jobs", category: "Motivation", likes: 0 },
     { text: "In the middle of every difficulty lies opportunity.", author: "Albert Einstein", category: "Wisdom", likes: 0 },
@@ -43,9 +43,7 @@ const SEED_QUOTES = [
     { text: "Two things are infinite: the universe and human stupidity.", author: "Albert Einstein", category: "Humor", likes: 0 },
 ];
 
-// ============================================================
-// DOM REFS
-// ============================================================
+// DOM refs
 const quoteLoading = document.getElementById("quote-loading");
 const quoteContent = document.getElementById("quote-content");
 const quoteEmpty = document.getElementById("quote-empty");
@@ -80,9 +78,7 @@ const modalClose = document.getElementById("modal-close");
 const modalCancel = document.getElementById("modal-cancel");
 const modalSave = document.getElementById("modal-save");
 
-// ============================================================
-// TOAST
-// ============================================================
+// Toast notification System
 function showToast(msg, type = "info") {
     const toast = document.getElementById("toast");
     toast.textContent = msg;
@@ -90,9 +86,7 @@ function showToast(msg, type = "info") {
     setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-// ============================================================
-// LOADING HELPER
-// ============================================================
+// Loading spinner Helper
 function setLoading(btn, isLoading, originalHTML) {
     if (isLoading) {
         btn.disabled = true;
@@ -103,9 +97,7 @@ function setLoading(btn, isLoading, originalHTML) {
     }
 }
 
-// ============================================================
-// DISPLAY QUOTE IN MAIN CARD
-// ============================================================
+// Display Quote in main card
 function displayQuote(quote, index) {
     currentIndex = index;
 
@@ -129,9 +121,7 @@ function displayQuote(quote, index) {
     typewriterEffect(quoteText, quote.text);
 }
 
-// ============================================================
-// TYPEWRITER
-// ============================================================
+// Typewriter effect
 function typewriterEffect(el, text) {
     if (typewriterTimer) {
         clearInterval(typewriterTimer);
@@ -155,18 +145,14 @@ function typewriterEffect(el, text) {
     }, speed);
 }
 
-// ============================================================
-// SHOW EMPTY STATE
-// ============================================================
+// Show empty state
 function showEmpty() {
     quoteLoading.style.display = "none";
     quoteContent.style.display = "none";
     quoteEmpty.style.display = "flex";
 }
 
-// ============================================================
-// PICK RANDOM QUOTE
-// ============================================================
+// Pick a random quote (with some logic to avoid immediate repeats)
 function pickRandom() {
     const pool = activeFilter === "liked"
         ? allQuotes.filter(q => q.liked)
@@ -189,9 +175,7 @@ function pickRandom() {
     if (activeItem) activeItem.classList.add("active");
 }
 
-// ============================================================
-// STATS BAR
-// ============================================================
+// Stats Bar Update
 function updateStats() {
     const total = allQuotes.length;
     const liked = allQuotes.filter(q => q.liked).length;
@@ -222,9 +206,7 @@ function animateCount(id, target) {
     }, delay);
 }
 
-// ============================================================
-// SEARCH
-// ============================================================
+// Search Bar Functionality
 searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
     searchClear.style.display = searchQuery ? "flex" : "none";
@@ -247,9 +229,7 @@ function highlight(text, query) {
     return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark>$1</mark>");
 }
 
-// ============================================================
-// EDIT MODAL — OPEN / CLOSE
-// ============================================================
+// Edit Modal Functionality (Open, Close, Save)
 function openEditModal(quote) {
     editingId = quote.id;
     editText.value = quote.text;
@@ -286,9 +266,7 @@ editText.addEventListener("input", () => {
     editCharCurrent.textContent = editText.value.length;
 });
 
-// ============================================================
-// EDIT MODAL — SAVE TO FIRESTORE
-// ============================================================
+// Edit modal Save button (Save to firebase)
 modalSave.addEventListener("click", async () => {
     const text = editText.value.trim();
     const author = editAuthor.value.trim();
@@ -337,9 +315,7 @@ editBtn.addEventListener("click", () => {
     if (quote) openEditModal(quote);
 });
 
-// ============================================================
-// SAVE IMAGE (html2canvas)
-// ============================================================
+// Save Image HTML2Canvas
 document.getElementById("share-btn").addEventListener("click", async () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
@@ -373,9 +349,7 @@ document.getElementById("share-btn").addEventListener("click", async () => {
     }
 });
 
-// ============================================================
-// REAL-TIME LISTENER
-// ============================================================
+// Realtime listener
 function startRealtimeListener() {
     const q = query(collection(db, COLLECTION), orderBy("createdAt", "desc"));
 
@@ -393,9 +367,7 @@ function startRealtimeListener() {
     });
 }
 
-// ============================================================
-// SEED IF EMPTY
-// ============================================================
+// Seed if empty
 async function seedIfEmpty() {
     const snapshot = await getDocs(collection(db, COLLECTION));
     if (!snapshot.empty) return;
@@ -407,9 +379,7 @@ async function seedIfEmpty() {
     );
 }
 
-// ============================================================
-// RENDER LIST
-// ============================================================
+// Render quote list
 function renderList() {
     const base = activeFilter === "liked"
         ? allQuotes.filter(q => q.liked)
@@ -470,7 +440,7 @@ function renderList() {
         </div>
     `).join("");
 
-    // Click item → show in main card
+    // Click item show in main card
     document.querySelectorAll(".quote-item").forEach(item => {
         item.addEventListener("click", (e) => {
             if (e.target.closest(".item-like-btn") ||
@@ -506,9 +476,7 @@ function renderList() {
     });
 }
 
-// ============================================================
-// ADD QUOTE
-// ============================================================
+// Add Quote
 submitBtn.addEventListener("click", async () => {
     const text = inputText.value.trim();
     const author = inputAuthor.value.trim();
@@ -545,9 +513,7 @@ submitBtn.addEventListener("click", async () => {
     }
 });
 
-// ============================================================
-// DELETE QUOTE
-// ============================================================
+// Delete Quote
 async function deleteQuote(id) {
     try {
         await deleteDoc(doc(db, COLLECTION, id));
@@ -567,9 +533,7 @@ deleteBtn.addEventListener("click", () => {
     if (quote) deleteQuote(quote.id);
 });
 
-// ============================================================
-// TOGGLE LIKE
-// ============================================================
+// Like Quote Toggle
 async function toggleLike(id) {
     const quote = allQuotes.find(q => q.id === id);
     if (!quote) return;
@@ -596,9 +560,7 @@ likeBtn.addEventListener("click", () => {
     if (quote) toggleLike(quote.id);
 });
 
-// ============================================================
-// COPY QUOTE
-// ============================================================
+// Copy Quote
 copyBtn.addEventListener("click", () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
@@ -611,25 +573,19 @@ copyBtn.addEventListener("click", () => {
     });
 });
 
-// ============================================================
-// NEW QUOTE BUTTON
-// ============================================================
+// New Quote Btn - Pick random
 newQuoteBtn.addEventListener("click", () => {
     newQuoteBtn.classList.add("spinning");
     setTimeout(() => newQuoteBtn.classList.remove("spinning"), 600);
     pickRandom();
 });
 
-// ============================================================
-// CHAR COUNTER
-// ============================================================
+// Character counter for new quote input
 inputText.addEventListener("input", () => {
     charCurrent.textContent = inputText.value.length;
 });
 
-// ============================================================
-// FILTER BUTTONS
-// ============================================================
+// Filter buttons 
 filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         filterBtns.forEach(b => b.classList.remove("active"));
@@ -640,12 +596,9 @@ filterBtns.forEach(btn => {
     });
 });
 
-// ============================================================
-// INIT
-// ============================================================
+// Initial setup
 (async () => {
     await seedIfEmpty();
     startRealtimeListener();
 })();
 
-// © 2026 Hassan Javed — All Rights Reserved

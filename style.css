@@ -1,7 +1,7 @@
 /* ============================================================
   QUOTE VAULT v2
   Author  : Hassan Javed
-  GitHub  : github.com/hassan-javed  (your actual username)
+  GitHub  : https://github.com/Hassanjaved17
   Built   : March 2026
   Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
   © 2026 Hassan Javed — All Rights Reserved
@@ -86,9 +86,9 @@ body {
   display: none;
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+
+   /* Header Start */
+
 .header {
   display: flex;
   align-items: center;
@@ -124,7 +124,9 @@ body {
   color: var(--text-primary);
 }
 
-/* Hide old SVG — new badge replaces it */
+.header-logo>span {
+  color: var(--cyan);
+}
 .header-logo>svg {
   display: none;
 }
@@ -194,10 +196,9 @@ body {
   background: var(--cyan);
   box-shadow: 0 0 6px var(--cyan);
 }
+/* Header End */
 
-/* ============================================================
-   STATS BAR
-   ============================================================ */
+/* Stat Bar Start */
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -256,10 +257,9 @@ body {
 .stat-divider {
   display: none;
 }
+/* Stat Bar End */
 
-/* ============================================================
-   QUOTE STAGE
-   ============================================================ */
+/* Quote Stage Start */
 .quote-stage {
   display: flex;
   flex-direction: column;
@@ -268,7 +268,7 @@ body {
   margin-bottom: 40px;
 }
 
-/* ---------- Quote Card ---------- */
+/*  Quote Card */
 .quote-card {
   width: 100%;
   min-height: 220px;
@@ -541,10 +541,10 @@ blockquote.typing::after {
     transform: rotate(360deg);
   }
 }
+/* Stat Bar End */
 
-/* ============================================================
-   SEARCH
-   ============================================================ */
+
+/* Search Start */
 .search-wrap {
   margin-bottom: 28px;
 }
@@ -620,10 +620,9 @@ blockquote.typing::after {
   border-radius: 2px;
   padding: 0 3px;
 }
+/* Search End */
 
-/* ============================================================
-   ADD SECTION
-   ============================================================ */
+/* Add Quote Start */
 .add-section {
   margin-bottom: 48px;
 }
@@ -767,10 +766,9 @@ input:focus {
   border-radius: 50%;
   animation: spin .7s linear infinite;
 }
+/* End Add Quote */
 
-/* ============================================================
-   QUOTES LIST
-   ============================================================ */
+/* ── All Quotes List Start ── */
 .list-header {
   display: flex;
   align-items: center;
@@ -941,10 +939,9 @@ input:focus {
   font-size: 13px;
   line-height: 1.7;
 }
+/* ── All Quotes List End ── */
 
-/* ============================================================
-   TOAST
-   ============================================================ */
+/* ── Toast Notification Start */
 .toast {
   position: fixed;
   bottom: 28px;
@@ -991,10 +988,9 @@ input:focus {
   color: var(--cyan-text);
   box-shadow: 0 8px 32px var(--cyan-glow);
 }
+/* ──── Toast Notification End */
 
-/* ============================================================
-   SHARE CARD (html2canvas)
-   ============================================================ */
+/* ──── Share Card (HTML2CANVAS) Start */
 #share-card-wrap {
   position: fixed;
   top: -9999px;
@@ -1085,10 +1081,10 @@ input:focus {
   letter-spacing: 2px;
   text-transform: uppercase;
 }
+/* ──── Share Card (HTML2CANVAS) End */
 
-/* ============================================================
-   COPYRIGHT FOOTER
-   ============================================================ */
+
+/* ──── Footer Start */
 .site-footer {
   margin-top: 64px;
   padding: 22px 0 16px;
@@ -1177,9 +1173,7 @@ input:focus {
   }
 }
 
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
+/* Animation */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -1215,10 +1209,8 @@ input:focus {
     transform: translateY(0);
   }
 }
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* ─── Footer End */
+/* Responsive */
 @media (max-width: 520px) {
   .quote-card {
     padding: 28px 22px;
@@ -1274,7 +1266,7 @@ input:focus {
   }
 }
 
-/* ── Sticky Header ── */
+/* ── Sticky Header Styling Start ── */
 .header {
   position: sticky;
   top: 0;
@@ -1298,15 +1290,9 @@ input:focus {
   padding-left: 24px;
   padding-right: 24px;
 }
+/* Sticky Header Styling End */
 
-
-
-/* ============================================================
-   EDIT MODAL STYLES — paste at bottom of style.css
-   © 2026 Hassan Javed
-   ============================================================ */
-
-/* ── Overlay ── */
+/* Modal Styles Start */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1464,6 +1450,7 @@ input:focus {
   cursor: not-allowed;
   transform: none;
 }
+/* Modal Styles End */
 
 /* ── Edit button in quote actions ── */
 .edit-btn:hover {

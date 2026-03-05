@@ -5,8 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quote Vault</title>
+  <!-- Style Sheet -->
   <link rel="stylesheet" href="style.css">
+  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon.png">
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap"
@@ -22,7 +25,7 @@
 
   <div class="app">
 
-    <!-- ── Header ── -->
+    <!-- ── Header Start ── -->
     <header class="header">
       <div class="header-logo">
         <div class="header-logo-badge">
@@ -40,13 +43,16 @@
         <span class="header-count"><span id="quote-count">0</span> entries</span>
       </div>
     </header>
+    <!-- ── Header End ── -->
 
+  <!-- Header Strip Start -->
     <div class="header-strip">
       <span class="header-strip-tag">Wisdom · Motivation · Life · Design · Humor</span>
       <div class="header-strip-accent"></div>
     </div>
+    <!-- Header Strip End -->
 
-    <!-- Stats Bar -->
+    <!-- Stats Bar Start -->
     <div class="stats-bar">
       <div class="stat-item">
         <span class="stat-value" id="stat-total">0</span>
@@ -68,8 +74,9 @@
         <span class="stat-label">Authors</span>
       </div>
     </div>
+    <!-- Stats Bar End -->
 
-    <!-- ── Main Quote Display ── -->
+    <!-- ── Main Quote Display Section Start ── -->
     <main class="quote-stage">
 
       <div class="quote-card" id="quote-card">
@@ -95,7 +102,7 @@
               </svg>
               <span id="like-count">0</span>
             </button>
-
+<!-- Copy btn -->
             <button class="action-btn copy-btn" id="copy-btn" title="Copy quote">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -103,7 +110,7 @@
               </svg>
               Copy
             </button>
-
+<!-- Edit btn -->
             <button class="action-btn edit-btn" id="edit-btn" title="Edit quote">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -111,7 +118,7 @@
               </svg>
               Edit
             </button>
-
+ <!-- Save as image btn -->
             <button class="action-btn share-btn" id="share-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -120,7 +127,7 @@
               </svg>
               Save Image
             </button>
-
+<!-- Delete btn -->
             <button class="action-btn delete-btn" id="delete-btn" title="Delete quote">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="3 6 5 6 21 6" />
@@ -132,7 +139,7 @@
             </button>
           </div>
         </div>
-
+<!-- Empty state -->
         <div class="quote-empty" id="quote-empty" style="display:none;">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
             opacity="0.3">
@@ -153,9 +160,10 @@
         </svg>
         New Quote
       </button>
-
     </main>
+    <!-- ── Main Quote Display Section Start ── -->
 
+    <!-- Search Bar -->
     <div class="search-wrap">
       <div class="search-box">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -175,7 +183,7 @@
     </div>
 
 
-    <!-- ── Add Quote Form ── -->
+    <!-- ── Add Quote Form start ── -->
     <section class="add-section">
       <div class="add-card">
         <h2 class="add-title">Add a Quote</h2>
@@ -199,6 +207,7 @@
         </button>
       </div>
     </section>
+    <!-- ── Add Quote Form End ── -->
 
     <!-- ── All Quotes List ── -->
     <section class="list-section">
@@ -210,10 +219,11 @@
         </div>
       </div>
       <div class="quotes-list" id="quotes-list">
-
+        <!-- Dynamically populated list of quotes will appear here -->
       </div>
     </section>
 
+    <!-- Footer Start -->
     <footer class="site-footer">
       <div class="footer-left">
         <span class="footer-copy">© 2026 <strong>Hassan Javed</strong></span>
@@ -224,8 +234,9 @@
         <div class="footer-dot"></div>
       </div>
     </footer>
+    <!-- Footer End -->
   </div>
-
+<!-- Share Card -->
   <div id="share-card-wrap">
     <div id="share-card">
       <div class="sc-quote-mark">"</div>
@@ -236,7 +247,7 @@
       </div>
     </div>
   </div>
-
+<!-- Edit Modal -->
   <div class="modal-overlay" id="edit-modal">
     <div class="modal-box">
 
@@ -249,17 +260,17 @@
           </svg>
         </button>
       </div>
-
+ <!-- Edit Form -->
       <div class="form-group">
         <textarea id="edit-text" rows="3" maxlength="300" placeholder="Quote text..."></textarea>
         <span class="char-count"><span id="edit-char-current">0</span>/300</span>
       </div>
-
+<!-- Author and Category -->
       <div class="form-row">
         <input type="text" id="edit-author" placeholder="Author name" maxlength="60">
         <input type="text" id="edit-category" placeholder="Category (optional)" maxlength="30">
       </div>
-
+<!-- Modal Actions -->
       <div class="modal-actions">
         <button class="modal-cancel-btn" id="modal-cancel">Cancel</button>
         <button class="modal-save-btn" id="modal-save">
@@ -273,12 +284,12 @@
     </div>
   </div>
 
-
+<!-- HTML2Canvas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
-
+<!-- App Script -->
   <script type="module" src="app.js"></script>
 </body>
 
@@ -287,7 +298,7 @@
 <!-- ============================================================
   QUOTE VAULT v2
   Author  : Hassan Javed
-  GitHub  : github.com/hassan-javed  (your actual username)
+  GitHub  : https://github.com/Hassanjaved17 
   Built   : March 2026
   Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
   © 2026 Hassan Javed — All Rights Reserved
