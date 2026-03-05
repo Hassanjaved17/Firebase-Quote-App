@@ -339,7 +339,7 @@ document.getElementById("share-btn").addEventListener("click", async () => {
         link.download = `quote-${Date.now()}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
-        showToast("Image saved! ✨", "success");
+        showToast("Image saved! ", "success");
     } catch (err) {
         console.error("Share error:", err);
         showToast("Failed to save image.", "error");
