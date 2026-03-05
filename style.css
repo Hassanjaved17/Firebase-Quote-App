@@ -1,9 +1,11 @@
 /* ============================================================
-   QUOTE VAULT — STYLE.CSS v2
-   Aesthetic: Midnight blue / electric cyan — cold & sharp
-   Fonts: Syne (display) + IBM Plex Mono + Inter
-   Author: © 2026 Hassan Javed — All Rights Reserved
-   ============================================================ */
+  QUOTE VAULT v2
+  Author  : Hassan Javed
+  GitHub  : github.com/hassan-javed  (your actual username)
+  Built   : March 2026
+  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
+  © 2026 Hassan Javed — All Rights Reserved
+  ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -1297,11 +1299,211 @@ input:focus {
   padding-right: 24px;
 }
 
+
+
 /* ============================================================
-  QUOTE VAULT v2
-  Author  : Hassan Javed
-  GitHub  : github.com/hassan-javed  (your actual username)
-  Built   : March 2026
-  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
-  © 2026 Hassan Javed — All Rights Reserved
-  ============================================================ */
+   EDIT MODAL STYLES — paste at bottom of style.css
+   © 2026 Hassan Javed
+   ============================================================ */
+
+/* ── Overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 8, 16, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Modal Box ── */
+.modal-box {
+  width: 100%;
+  max-width: 480px;
+  background: #080e1a;
+  border: 1px solid var(--cyan-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 255, .06) inset,
+    0 0 60px rgba(0, 212, 255, .08),
+    0 32px 80px rgba(0, 0, 0, .6);
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.modal-overlay.open .modal-box {
+  transform: translateY(0) scale(1);
+}
+
+/* Top cyan glow line */
+.modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: .5;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* ── Modal Header ── */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: .5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-title::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  transition: all var(--transition);
+}
+
+.modal-close:hover {
+  color: var(--danger);
+  background: rgba(248, 113, 113, .08);
+}
+
+/* ── Modal Actions ── */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.modal-cancel-btn {
+  flex: 1;
+  padding: 11px;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.modal-cancel-btn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(248, 113, 113, .06);
+}
+
+.modal-save-btn {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--cyan-border);
+  border-radius: var(--radius-md);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.modal-save-btn:hover {
+  background: rgba(0, 212, 255, .14);
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px var(--cyan-glow);
+  transform: translateY(-1px);
+}
+
+.modal-save-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Edit button in quote actions ── */
+.edit-btn:hover {
+  color: var(--cyan);
+  border-color: var(--cyan-border);
+  background: var(--cyan-dim);
+  box-shadow: 0 0 12px var(--cyan-glow);
+}
+
+/* ── Edit button in list items ── */
+.item-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  transition: all var(--transition);
+}
+
+.item-edit-btn:hover {
+  color: var(--cyan);
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+  .modal-box {
+    padding: 22px 18px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-save-btn {
+    flex: 1;
+  }
+}

@@ -1,3 +1,10 @@
+// ============================================================
+//  QUOTE VAULT v2 — FIREBASE CONFIG
+//  Author  : Hassan Javed
+//  © 2026 Hassan Javed — All Rights Reserved
+// ============================================================
+
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -14,8 +21,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-// ============================================================
-//  QUOTE VAULT v2 — FIREBASE CONFIG
-//  Author  : Hassan Javed
-//  © 2026 Hassan Javed — All Rights Reserved
-// ============================================================

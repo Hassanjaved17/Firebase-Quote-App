@@ -1,5 +1,10 @@
-// app.js — Quote Vault
-// Firestore CRUD: add, read, delete, like quotes
+// ============================================================
+//  QUOTE VAULT v2 — APP.JS
+//  Author  : Hassan Javed
+//  Built   : March 2026
+//  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
+//  © 2026 Hassan Javed — All Rights Reserved
+// ============================================================
 
 import { db } from "./firebase.js";
 import {
@@ -15,12 +20,15 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// ============================================================
 // STATE
+// ============================================================
 let allQuotes = [];
 let currentIndex = -1;
 let activeFilter = "all";
 let searchQuery = "";
 let typewriterTimer = null;
+let editingId = null;
 
 const COLLECTION = "quotes";
 
@@ -35,7 +43,9 @@ const SEED_QUOTES = [
     { text: "Two things are infinite: the universe and human stupidity.", author: "Albert Einstein", category: "Humor", likes: 0 },
 ];
 
+// ============================================================
 // DOM REFS
+// ============================================================
 const quoteLoading = document.getElementById("quote-loading");
 const quoteContent = document.getElementById("quote-content");
 const quoteEmpty = document.getElementById("quote-empty");
@@ -46,6 +56,7 @@ const likeBtn = document.getElementById("like-btn");
 const likeCount = document.getElementById("like-count");
 const copyBtn = document.getElementById("copy-btn");
 const deleteBtn = document.getElementById("delete-btn");
+const editBtn = document.getElementById("edit-btn");
 const newQuoteBtn = document.getElementById("new-quote-btn");
 const quoteCount = document.getElementById("quote-count");
 const inputText = document.getElementById("input-text");
@@ -59,7 +70,19 @@ const searchInput = document.getElementById("search-input");
 const searchClear = document.getElementById("search-clear");
 const searchInfo = document.getElementById("search-info");
 
+// Edit modal refs
+const editModal = document.getElementById("edit-modal");
+const editText = document.getElementById("edit-text");
+const editAuthor = document.getElementById("edit-author");
+const editCategory = document.getElementById("edit-category");
+const editCharCurrent = document.getElementById("edit-char-current");
+const modalClose = document.getElementById("modal-close");
+const modalCancel = document.getElementById("modal-cancel");
+const modalSave = document.getElementById("modal-save");
+
+// ============================================================
 // TOAST
+// ============================================================
 function showToast(msg, type = "info") {
     const toast = document.getElementById("toast");
     toast.textContent = msg;
@@ -67,7 +90,9 @@ function showToast(msg, type = "info") {
     setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
+// ============================================================
 // LOADING HELPER
+// ============================================================
 function setLoading(btn, isLoading, originalHTML) {
     if (isLoading) {
         btn.disabled = true;
@@ -78,7 +103,9 @@ function setLoading(btn, isLoading, originalHTML) {
     }
 }
 
+// ============================================================
 // DISPLAY QUOTE IN MAIN CARD
+// ============================================================
 function displayQuote(quote, index) {
     currentIndex = index;
 
@@ -102,8 +129,10 @@ function displayQuote(quote, index) {
     typewriterEffect(quoteText, quote.text);
 }
 
+// ============================================================
+// TYPEWRITER
+// ============================================================
 function typewriterEffect(el, text) {
-    // Cancel any previous typewriter still running
     if (typewriterTimer) {
         clearInterval(typewriterTimer);
         typewriterTimer = null;
@@ -113,7 +142,6 @@ function typewriterEffect(el, text) {
     el.classList.add("typing");
 
     let i = 0;
-    // Speed: longer quotes type faster so it never feels sluggish
     const speed = Math.max(18, Math.min(40, Math.round(2400 / text.length)));
 
     typewriterTimer = setInterval(() => {
@@ -122,20 +150,23 @@ function typewriterEffect(el, text) {
         if (i >= text.length) {
             clearInterval(typewriterTimer);
             typewriterTimer = null;
-            // Remove blinking cursor after short pause
             setTimeout(() => el.classList.remove("typing"), 800);
         }
     }, speed);
 }
 
-
+// ============================================================
+// SHOW EMPTY STATE
+// ============================================================
 function showEmpty() {
     quoteLoading.style.display = "none";
     quoteContent.style.display = "none";
     quoteEmpty.style.display = "flex";
 }
 
+// ============================================================
 // PICK RANDOM QUOTE
+// ============================================================
 function pickRandom() {
     const pool = activeFilter === "liked"
         ? allQuotes.filter(q => q.liked)
@@ -157,7 +188,10 @@ function pickRandom() {
     const activeItem = document.querySelector(`[data-id="${quote.id}"]`);
     if (activeItem) activeItem.classList.add("active");
 }
+
+// ============================================================
 // STATS BAR
+// ============================================================
 function updateStats() {
     const total = allQuotes.length;
     const liked = allQuotes.filter(q => q.liked).length;
@@ -188,7 +222,9 @@ function animateCount(id, target) {
     }, delay);
 }
 
+// ============================================================
 // SEARCH
+// ============================================================
 searchInput.addEventListener("input", () => {
     searchQuery = searchInput.value.trim().toLowerCase();
     searchClear.style.display = searchQuery ? "flex" : "none";
@@ -211,7 +247,99 @@ function highlight(text, query) {
     return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark>$1</mark>");
 }
 
+// ============================================================
+// EDIT MODAL — OPEN / CLOSE
+// ============================================================
+function openEditModal(quote) {
+    editingId = quote.id;
+    editText.value = quote.text;
+    editAuthor.value = quote.author || "";
+    editCategory.value = quote.category || "";
+    editCharCurrent.textContent = quote.text.length;
+    editModal.classList.add("open");
+    setTimeout(() => editText.focus(), 200);
+}
+
+function closeEditModal() {
+    editModal.classList.remove("open");
+    editingId = null;
+}
+
+// Close on overlay background click
+editModal.addEventListener("click", (e) => {
+    if (e.target === editModal) closeEditModal();
+});
+
+// Close on X button
+modalClose.addEventListener("click", closeEditModal);
+
+// Close on Cancel button
+modalCancel.addEventListener("click", closeEditModal);
+
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && editModal.classList.contains("open")) closeEditModal();
+});
+
+// Char counter inside modal
+editText.addEventListener("input", () => {
+    editCharCurrent.textContent = editText.value.length;
+});
+
+// ============================================================
+// EDIT MODAL — SAVE TO FIRESTORE
+// ============================================================
+modalSave.addEventListener("click", async () => {
+    const text = editText.value.trim();
+    const author = editAuthor.value.trim();
+    const category = editCategory.value.trim();
+
+    if (!text) {
+        editText.style.borderColor = "var(--danger)";
+        setTimeout(() => editText.style.borderColor = "", 1500);
+        editText.focus();
+        return;
+    }
+
+    const orig = modalSave.innerHTML;
+    modalSave.disabled = true;
+    modalSave.innerHTML = `<span class="spinner"></span> Saving...`;
+
+    try {
+        await updateDoc(doc(db, COLLECTION, editingId), {
+            text,
+            author: author || "Unknown",
+            category: category || ""
+        });
+
+        // If edited quote is currently displayed — update main card instantly
+        if (allQuotes[currentIndex]?.id === editingId) {
+            typewriterEffect(quoteText, text);
+            quoteAuthor.textContent = `— ${author || "Unknown"}`;
+            quoteCategory.textContent = category || "";
+            quoteCategory.style.display = category ? "inline-block" : "none";
+        }
+
+        showToast("Quote updated! ✨", "success");
+        closeEditModal();
+    } catch (err) {
+        console.error("Edit error:", err);
+        showToast("Failed to update. Try again.", "error");
+    } finally {
+        modalSave.disabled = false;
+        modalSave.innerHTML = orig;
+    }
+});
+
+// Edit button on main card
+editBtn.addEventListener("click", () => {
+    const quote = allQuotes[currentIndex];
+    if (quote) openEditModal(quote);
+});
+
+// ============================================================
 // SAVE IMAGE (html2canvas)
+// ============================================================
 document.getElementById("share-btn").addEventListener("click", async () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
@@ -245,7 +373,9 @@ document.getElementById("share-btn").addEventListener("click", async () => {
     }
 });
 
+// ============================================================
 // REAL-TIME LISTENER
+// ============================================================
 function startRealtimeListener() {
     const q = query(collection(db, COLLECTION), orderBy("createdAt", "desc"));
 
@@ -263,7 +393,9 @@ function startRealtimeListener() {
     });
 }
 
+// ============================================================
 // SEED IF EMPTY
+// ============================================================
 async function seedIfEmpty() {
     const snapshot = await getDocs(collection(db, COLLECTION));
     if (!snapshot.empty) return;
@@ -275,14 +407,14 @@ async function seedIfEmpty() {
     );
 }
 
+// ============================================================
 // RENDER LIST
+// ============================================================
 function renderList() {
-    // Step 1: filter by liked tab
     const base = activeFilter === "liked"
         ? allQuotes.filter(q => q.liked)
         : allQuotes;
 
-    // Step 2: filter by search query
     const toShow = searchQuery
         ? base.filter(q =>
             q.text.toLowerCase().includes(searchQuery) ||
@@ -291,12 +423,10 @@ function renderList() {
         )
         : base;
 
-    // Update search result info text
     if (searchQuery) {
         searchInfo.innerHTML = `${toShow.length} result${toShow.length !== 1 ? "s" : ""} for "<strong>${searchQuery}</strong>"`;
     }
 
-    // Empty state
     if (toShow.length === 0) {
         quotesList.innerHTML = `<div class="quotes-list-empty">
             ${searchQuery
@@ -318,6 +448,12 @@ function renderList() {
                 <span class="item-author">${highlight(`— ${q.author || "Unknown"}`, searchQuery)}</span>
             </div>
             <div class="item-actions">
+                <button class="item-edit-btn" data-id="${q.id}" title="Edit">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                </button>
                 <button class="item-like-btn ${q.liked ? "liked" : ""}" data-id="${q.id}" title="Like">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="${q.liked ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -337,11 +473,21 @@ function renderList() {
     // Click item → show in main card
     document.querySelectorAll(".quote-item").forEach(item => {
         item.addEventListener("click", (e) => {
-            if (e.target.closest(".item-like-btn") || e.target.closest(".item-delete-btn")) return;
+            if (e.target.closest(".item-like-btn") ||
+                e.target.closest(".item-delete-btn") ||
+                e.target.closest(".item-edit-btn")) return;
             const idx = parseInt(item.dataset.index);
             displayQuote(allQuotes[idx], idx);
             document.querySelectorAll(".quote-item").forEach(el => el.classList.remove("active"));
             item.classList.add("active");
+        });
+    });
+
+    document.querySelectorAll(".item-edit-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const quote = allQuotes.find(q => q.id === btn.dataset.id);
+            if (quote) openEditModal(quote);
         });
     });
 
@@ -359,7 +505,10 @@ function renderList() {
         });
     });
 }
+
+// ============================================================
 // ADD QUOTE
+// ============================================================
 submitBtn.addEventListener("click", async () => {
     const text = inputText.value.trim();
     const author = inputAuthor.value.trim();
@@ -396,7 +545,9 @@ submitBtn.addEventListener("click", async () => {
     }
 });
 
+// ============================================================
 // DELETE QUOTE
+// ============================================================
 async function deleteQuote(id) {
     try {
         await deleteDoc(doc(db, COLLECTION, id));
@@ -416,7 +567,9 @@ deleteBtn.addEventListener("click", () => {
     if (quote) deleteQuote(quote.id);
 });
 
+// ============================================================
 // TOGGLE LIKE
+// ============================================================
 async function toggleLike(id) {
     const quote = allQuotes.find(q => q.id === id);
     if (!quote) return;
@@ -443,7 +596,9 @@ likeBtn.addEventListener("click", () => {
     if (quote) toggleLike(quote.id);
 });
 
+// ============================================================
 // COPY QUOTE
+// ============================================================
 copyBtn.addEventListener("click", () => {
     const quote = allQuotes[currentIndex];
     if (!quote) return;
@@ -456,19 +611,25 @@ copyBtn.addEventListener("click", () => {
     });
 });
 
+// ============================================================
 // NEW QUOTE BUTTON
+// ============================================================
 newQuoteBtn.addEventListener("click", () => {
     newQuoteBtn.classList.add("spinning");
     setTimeout(() => newQuoteBtn.classList.remove("spinning"), 600);
     pickRandom();
 });
 
+// ============================================================
 // CHAR COUNTER
+// ============================================================
 inputText.addEventListener("input", () => {
     charCurrent.textContent = inputText.value.length;
 });
 
+// ============================================================
 // FILTER BUTTONS
+// ============================================================
 filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         filterBtns.forEach(b => b.classList.remove("active"));
@@ -479,17 +640,12 @@ filterBtns.forEach(btn => {
     });
 });
 
+// ============================================================
 // INIT
+// ============================================================
 (async () => {
     await seedIfEmpty();
     startRealtimeListener();
 })();
 
-// ============================================================
-//  QUOTE VAULT v2
-//  Author  : Hassan Javed
-//  GitHub  : github.com/hassan-javed  (your actual username)
-//  Built   : March 2026
-//  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
-//  © 2026 Hassan Javed — All Rights Reserved
-// ============================================================
+// © 2026 Hassan Javed — All Rights Reserved
