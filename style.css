@@ -162,7 +162,6 @@ body {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--cyan);
-  opacity: .6;
 }
 
 .header-count {
