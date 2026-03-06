@@ -87,7 +87,7 @@ body {
 }
 
 
-   /* Header Start */
+/* Header Start */
 
 .header {
   display: flex;
@@ -127,6 +127,7 @@ body {
 .header-logo>span {
   color: var(--cyan);
 }
+
 .header-logo>svg {
   display: none;
 }
@@ -184,10 +185,10 @@ body {
 
 .header-strip-tag {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--cyan);
 }
 
 .header-strip-accent {
@@ -196,6 +197,7 @@ body {
   background: var(--cyan);
   box-shadow: 0 0 6px var(--cyan);
 }
+
 /* Header End */
 
 /* Stat Bar Start */
@@ -251,12 +253,13 @@ body {
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: var(--text-muted);
+  color: var(--cyan);
 }
 
 .stat-divider {
   display: none;
 }
+
 /* Stat Bar End */
 
 /* Quote Stage Start */
@@ -541,6 +544,7 @@ blockquote.typing::after {
     transform: rotate(360deg);
   }
 }
+
 /* Stat Bar End */
 
 
@@ -620,6 +624,7 @@ blockquote.typing::after {
   border-radius: 2px;
   padding: 0 3px;
 }
+
 /* Search End */
 
 /* Add Quote Start */
@@ -766,6 +771,7 @@ input:focus {
   border-radius: 50%;
   animation: spin .7s linear infinite;
 }
+
 /* End Add Quote */
 
 /* ── All Quotes List Start ── */
@@ -939,6 +945,7 @@ input:focus {
   font-size: 13px;
   line-height: 1.7;
 }
+
 /* ── All Quotes List End ── */
 
 /* ── Toast Notification Start */
@@ -988,6 +995,7 @@ input:focus {
   color: var(--cyan-text);
   box-shadow: 0 8px 32px var(--cyan-glow);
 }
+
 /* ──── Toast Notification End */
 
 /* ──── Share Card (HTML2CANVAS) Start */
@@ -1081,6 +1089,7 @@ input:focus {
   letter-spacing: 2px;
   text-transform: uppercase;
 }
+
 /* ──── Share Card (HTML2CANVAS) End */
 
 
@@ -1209,6 +1218,7 @@ input:focus {
     transform: translateY(0);
   }
 }
+
 /* ─── Footer End */
 /* Responsive */
 @media (max-width: 520px) {
@@ -1286,6 +1296,7 @@ input:focus {
   padding-left: 24px;
   padding-right: 24px;
 }
+
 /* Sticky Header Styling End */
 
 /* Modal Styles Start */
@@ -1446,6 +1457,7 @@ input:focus {
   cursor: not-allowed;
   transform: none;
 }
+
 /* Modal Styles End */
 
 /* ── Edit button in quote actions ── */
