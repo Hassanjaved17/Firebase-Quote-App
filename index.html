@@ -1,338 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quote Vault</title>
-  <!-- Style Sheet -->
-  <link rel="stylesheet" href="style.css">
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon.png">
-  <!-- Google Fonts -->
+  <title>Quote Vault — Sign In</title>
+  <link rel="icon" type="image/png" href="./images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
-</head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap">
+ <link rel="stylesheet" href="auth.css">
+  </head>
+  <!-- <style>
+    /* ============================================================
+       QUOTE VAULT — AUTH PAGE
+       Midnight blue / electric cyan — matches Quote Vault v2
+       © 2026 Hassan Javed — All Rights Reserved
+       ============================================================ */
+
+    :root {
+      --bg:            #060b14;
+      --bg-card:       rgba(12, 24, 48, 0.85);
+      --cyan:          #00d4ff;
+      --cyan-dim:      rgba(0, 212, 255, 0.1);
+      --cyan-border:   rgba(0, 212, 255, 0.25);
+      --cyan-glow:     rgba(0, 212, 255, 0.2);
+      --cyan-text:     #7ef0ff;
+      --border:        rgba(0, 212, 255, 0.1);
+      --border-bright: rgba(0, 212, 255, 0.22);
+      --danger:        #f87171;
+      --success:       #34d399;
+      --text-primary:  #ffffff;
+      --text-secondary:#94c8e0;
+      --text-muted:    #4a7a96;
+      --radius-md: 8px;
+      --radius-lg: 14px;
+      --transition: 0.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+      background: var(--bg);
+      color: var(--text-primary);
+      background-image:
+        repeating-linear-gradient(0deg,
+          transparent, transparent 2px,
+          rgba(0,212,255,0.006) 2px,
+          rgba(0,212,255,0.006) 4px),
+        radial-gradient(ellipse 80% 60% at 20% 0%,  rgba(0,90,180,0.4)  0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 85% 90%, rgba(0,40,100,0.45) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,25,65,0.25)  0%, transparent 70%);
+    }
+
+    /* ── Brand Header ── */
+    .auth-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      animation: fadeDown .5s ease both;
+    }
+
+    .auth-brand-badge {
+      width: 48px; height: 48px;
+      border: 1px solid var(--cyan-border);
+      border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,212,255,0.1);
+      box-shadow: 0 0 28px var(--cyan-glow);
+      margin-bottom: 4px;
+    }
+    .auth-brand-badge svg { color: var(--cyan); }
+
+    .auth-brand-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem; font-weight: 800;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: #ffffff;
+    }
+    .auth-brand-name span { color: var(--cyan); }
+
+    .auth-brand-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--cyan); opacity: .7;
+    }
+
+    /* ── Auth Card ── */
+    .auth-wrapper {
+      width: 100%; max-width: 420px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(0,212,255,.05) inset,
+        0 0 60px rgba(0,212,255,.08),
+        0 32px 64px rgba(0,0,0,.6);
+      animation: fadeUp .55s cubic-bezier(.22,1,.36,1) both;
+      position: relative;
+    }
+
+    /* Top cyan line */
+    .auth-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: .8;
+    }
+
+    /* Corner bracket */
+    .auth-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 16px; right: 16px;
+      width: 18px; height: 18px;
+      border-bottom: 1px solid var(--cyan-border);
+      border-right:  1px solid var(--cyan-border);
+    }
+
+    .auth-section { padding: 28px 32px; }
+    .auth-section + .auth-section { padding-top: 24px; }
+
+    hr { border:none; border-top: 1px solid var(--border); }
+
+    .auth-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: #ffffff; letter-spacing: .5px;
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .auth-section h2::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+      flex-shrink: 0;
+    }
+
+    /* ── Inputs ── */
+    form { display: flex; flex-direction: column; gap: 10px; }
+    br   { display: none; }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%; padding: 12px 16px;
+      background: rgba(0,212,255,.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; color: #ffffff;
+      outline: none; caret-color: var(--cyan);
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    input::placeholder { color: var(--text-muted); }
+    input:focus {
+      border-color: var(--cyan-border);
+      background: rgba(0,212,255,.07);
+      box-shadow: 0 0 0 3px var(--cyan-glow);
+    }
+    input.input--error {
+      border-color: var(--danger) !important;
+      box-shadow: 0 0 0 3px rgba(248,113,113,.2) !important;
+      background: rgba(248,113,113,.04) !important;
+    }
+
+    .input-error-msg {
+      display: block; font-size: 12px; color: var(--danger);
+      margin-top: -4px; padding-left: 2px;
+      font-family: 'IBM Plex Mono', monospace;
+      animation: fadeIn .2s ease both;
+    }
+
+    .password-row { display: flex; flex-direction: column; gap: 6px; }
+
+    .forgot-link {
+      align-self: flex-end;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; letter-spacing: .5px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color var(--transition);
+    }
+    .forgot-link:hover { color: var(--cyan); }
+
+    /* ── Buttons ── */
+    button {
+      width: 100%; padding: 12px 18px;
+      border: none; border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 600; letter-spacing: .2px;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    button:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
+
+    #signup-btn, #login-btn {
+      background: rgba(0,212,255,.12);
+      border: 1px solid var(--cyan-border);
+      color: var(--cyan);
+      box-shadow: 0 0 20px var(--cyan-glow);
+      margin-top: 4px;
+    }
+    #signup-btn:hover:not(:disabled),
+    #login-btn:hover:not(:disabled) {
+      background: rgba(0,212,255,.2);
+      border-color: var(--cyan);
+      box-shadow: 0 0 32px rgba(0,212,255,.3);
+      transform: translateY(-1px);
+    }
+    #signup-btn:active, #login-btn:active { transform: translateY(0); }
+
+    /* Google */
+    .google-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 12px 18px; margin-top: 4px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .google-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.25);
+      color: #ffffff; transform: translateY(-1px);
+    }
+    .google-btn:active { transform: translateY(0); }
+    .google-btn svg { flex-shrink: 0; }
+
+    /* OR divider */
+    .or-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 6px 0;
+    }
+    .or-divider::before, .or-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .or-divider span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(0,212,255,.2);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin .7s linear infinite; flex-shrink: 0;
+    }
+    .google-btn .spinner {
+      border-color: rgba(255,255,255,.2);
+      border-top-color: #ffffff;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      opacity: 0; z-index: 9999;
+      display: flex; align-items: center; gap: 9px;
+      padding: 12px 20px; border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px; font-weight: 500;
+      white-space: nowrap; pointer-events: none;
+      backdrop-filter: blur(20px);
+      transition: opacity .3s ease, transform .3s cubic-bezier(.22,1,.36,1);
+    }
+    .toast--show  { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast--success {
+      background: rgba(10,20,40,.95);
+      border: 1px solid rgba(52,211,153,.4); color: var(--success);
+      box-shadow: 0 8px 32px rgba(52,211,153,.2);
+    }
+    .toast--error {
+      background: rgba(10,20,40,.95);
+      border: 1px solid rgba(248,113,113,.4); color: var(--danger);
+      box-shadow: 0 8px 32px rgba(248,113,113,.2);
+    }
+    .toast--info {
+      background: rgba(10,20,40,.95);
+      border: 1px solid var(--cyan-border); color: var(--cyan-text);
+      box-shadow: 0 8px 32px var(--cyan-glow);
+    }
+
+    /* Footer */
+    .auth-footer {
+      margin-top: 20px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      animation: fadeUp .5s ease .2s both;
+    }
+    .auth-footer-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .auth-footer-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 6px var(--cyan);
+      animation: footerPulse 2s ease-in-out infinite;
+    }
+
+    /* Animations */
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn   { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes spin     { to{transform:rotate(360deg)} }
+    @keyframes footerPulse {
+      0%,100%{opacity:1;box-shadow:0 0 6px var(--cyan)}
+      50%{opacity:.3;box-shadow:none}
+    }
+
+    @media (max-width: 480px) {
+      .auth-section { padding: 24px 20px; }
+      .toast { white-space:normal; max-width:calc(100vw - 40px); }
+    }
+  </style> -->
+
 
 <body>
 
-  <!-- Background orbs -->
-  <div class="orb orb--1"></div>
-  <div class="orb orb--2"></div>
-  <div class="orb orb--3"></div>
-
-  <div class="app">
-
-    <!-- ── Header Start ── -->
-    <header class="header">
-      <div class="header-logo">
-        <div class="header-logo-badge">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path
-              d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-            <path
-              d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
-          </svg>
-        </div>
-        Quote Vault
-      </div>
-      <div class="header-right">
-        <span class="header-issue">Vol. I — 2026</span>
-        <span class="header-count"><span id="quote-count">0</span> entries</span>
-      </div>
-    </header>
-    <!-- ── Header End ── -->
-
-    <!-- Header Strip Start -->
-    <div class="header-strip">
-      <span class="header-strip-tag">Wisdom · Motivation · Life · Design · Humor</span>
-      <div class="header-strip-accent"></div>
-    </div>
-    <!-- Header Strip End -->
-
-    <!-- Stats Bar Start -->
-    <div class="stats-bar">
-      <div class="stat-item">
-        <span class="stat-value" id="stat-total">0</span>
-        <span class="stat-label">Total</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-value" id="stat-liked">0</span>
-        <span class="stat-label">Liked</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-value" id="stat-categories">0</span>
-        <span class="stat-label">Categories</span>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-value" id="stat-authors">0</span>
-        <span class="stat-label">Authors</span>
-      </div>
-    </div>
-    <!-- Stats Bar End -->
-
-    <!-- ── Main Quote Display Section Start ── -->
-    <main class="quote-stage">
-
-      <div class="quote-card" id="quote-card">
-        <div class="quote-loading" id="quote-loading">
-          <div class="loading-dots">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-
-        <div class="quote-content" id="quote-content" style="display:none;">
-          <div class="quote-mark">"</div>
-          <blockquote id="quote-text">Loading...</blockquote>
-          <div class="quote-meta">
-            <span class="quote-author" id="quote-author">— Unknown</span>
-            <span class="quote-category" id="quote-category"></span>
-          </div>
-
-          <div class="quote-actions">
-            <button class="action-btn like-btn" id="like-btn" title="Like this quote">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path
-                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-              <span id="like-count">0</span>
-            </button>
-            <!-- Copy btn -->
-            <button class="action-btn copy-btn" id="copy-btn" title="Copy quote">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-              </svg>
-              Copy
-            </button>
-            <!-- Edit btn -->
-            <button class="action-btn edit-btn" id="edit-btn" title="Edit quote">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-              </svg>
-              Edit
-            </button>
-            <!-- Save as image btn -->
-            <button class="action-btn share-btn" id="share-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              Save Image
-            </button>
-            <!-- Delete btn -->
-            <button class="action-btn delete-btn" id="delete-btn" title="Delete quote">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3 6 5 6 21 6" />
-                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                <path d="M10 11v6M14 11v6" />
-                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-              </svg>
-              Delete
-            </button>
-          </div>
-        </div>
-        <!-- Empty state -->
-        <div class="quote-empty" id="quote-empty" style="display:none;">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
-            opacity="0.3">
-            <path
-              d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-            <path
-              d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
-          </svg>
-          <p>No quotes yet.<br>Add your first one below!</p>
-        </div>
-      </div>
-
-      <!-- New Quote Button -->
-      <button class="new-quote-btn" id="new-quote-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <polyline points="1 4 1 10 7 10" />
-          <path d="M3.51 15a9 9 0 1 0 .49-4.47" />
-        </svg>
-        New Quote
-      </button>
-    </main>
-    <!-- ── Main Quote Display Section Start ── -->
-
-    <!-- Search Bar -->
-    <div class="search-wrap">
-      <div class="search-box">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <input type="text" id="search-input" placeholder="Search quotes or authors..." autocomplete="off">
-        <button class="search-clear" id="search-clear" style="display:none;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <div class="search-info" id="search-info" style="display:none;"></div>
-    </div>
-
-
-    <!-- ── Add Quote Form start ── -->
-    <section class="add-section">
-      <div class="add-card">
-        <h2 class="add-title">Add a Quote</h2>
-
-        <div class="form-group">
-          <textarea id="input-text" placeholder="Enter your quote here..." rows="3" maxlength="300"></textarea>
-          <span class="char-count"><span id="char-current">0</span>/300</span>
-        </div>
-
-        <div class="form-row">
-          <input type="text" id="input-author" placeholder="Author name" maxlength="60">
-          <input type="text" id="input-category" placeholder="Category (optional)" maxlength="30">
-        </div>
-
-        <button class="submit-btn" id="submit-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-          Add to Vault
-        </button>
-      </div>
-    </section>
-    <!-- ── Add Quote Form End ── -->
-
-    <!-- ── All Quotes List ── -->
-    <section class="list-section">
-      <div class="list-header">
-        <h2 class="list-title">All Quotes</h2>
-        <div class="list-filters">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="liked">❤️ Liked</button>
-        </div>
-      </div>
-      <div class="quotes-list" id="quotes-list">
-        <!-- Dynamically populated list of quotes will appear here -->
-      </div>
-    </section>
-
-    <!-- Footer Start -->
-    <footer class="site-footer">
-      <div class="footer-left">
-        <span class="footer-copy">© 2026 <strong>Hassan Javed</strong></span>
-        <span class="footer-rights">All rights reserved. Unauthorized reproduction prohibited.</span>
-      </div>
-      <div class="footer-right">
-        <span class="footer-badge">Quote Vault v2</span>
-        <div class="footer-dot"></div>
-      </div>
-    </footer>
-    <!-- Footer End -->
-  </div>
-  <!-- Share Card -->
-  <div id="share-card-wrap">
-    <div id="share-card">
-      <div class="sc-quote-mark">"</div>
-      <p class="sc-text" id="sc-text"></p>
-      <p class="sc-author" id="sc-author"></p>
-      <div class="sc-footer">
-        <span class="sc-logo">Quote Vault</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="delete-modal">
-  <div class="modal-box delete-modal-box">
-
-    <div class="delete-modal-icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <polyline points="3 6 5 6 21 6" />
-        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-        <path d="M10 11v6M14 11v6" />
-        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+  <!-- Brand -->
+  <div class="auth-brand">
+    <div class="auth-brand-badge">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
       </svg>
     </div>
+    <div class="auth-brand-name">Quote <span>Vault</span></div>
+    <div class="auth-brand-sub">Vol. I — 2026</div>
+  </div>
 
-    <h3 class="delete-modal-title">Delete Quote?</h3>
-    <p class="delete-modal-msg">This quote will be permanently removed from your vault. This action cannot be undone.
-    </p>
+  <div class="auth-wrapper">
 
-    <div class="delete-preview" id="delete-preview"></div>
+    <!-- Sign Up -->
+    <div class="auth-section">
+      <h2>Sign Up</h2>
+      <form id="signup-form" novalidate>
+        <input type="email"    id="signup-email"    placeholder="Email address"           autocomplete="email"        required>
+        <input type="password" id="signup-password" placeholder="Password (min. 6 chars)" autocomplete="new-password" required>
+        <button type="submit"  id="signup-btn">Create Account</button>
+      </form>
+    </div>
 
-    <div class="modal-actions">
-      <button class="modal-cancel-btn" id="delete-modal-cancel">Cancel</button>
-      <button class="delete-confirm-btn" id="delete-modal-confirm">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="3 6 5 6 21 6" />
-          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+    <hr>
+
+    <!-- Login -->
+    <div class="auth-section">
+      <h2>Login</h2>
+      <form id="login-form" novalidate>
+        <input type="email" id="login-email" placeholder="Email address" autocomplete="email" required>
+        <div class="password-row">
+          <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
+          <a href="reset.html" class="forgot-link">Forgot password?</a>
+        </div>
+        <button type="submit" id="login-btn">Sign In</button>
+      </form>
+
+      <div class="or-divider"><span>or</span></div>
+
+      <button type="button" id="google-btn" class="google-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18" height="18">
+          <path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/>
+          <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 13 24 13c3 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.5 29.3 4 24 4c-7.8 0-14.5 4.3-17.7 10.7z"/>
+          <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.4 35.6 26.8 36 24 36c-5.2 0-9.7-2.9-11.9-7.2l-6.6 5.1C9.4 39.6 16.2 44 24 44z"/>
+          <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.7 35.5 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/>
         </svg>
-        Yes, Delete It
+        Continue with Google
       </button>
     </div>
 
   </div>
+
+  <!-- Footer -->
+  <div class="auth-footer">
+    <div class="auth-footer-dot"></div>
+    <span class="auth-footer-text">© 2026 Hassan Javed — Quote Vault</span>
+    <div class="auth-footer-dot"></div>
   </div>
-
-  <!-- Edit Modal -->
-  <div class="modal-overlay" id="edit-modal">
-    <div class="modal-box">
-
-      <div class="modal-header">
-        <h3 class="modal-title">Edit Quote</h3>
-        <button class="modal-close" id="modal-close">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <!-- Edit Form -->
-      <div class="form-group">
-        <textarea id="edit-text" rows="3" maxlength="300" placeholder="Quote text..."></textarea>
-        <span class="char-count"><span id="edit-char-current">0</span>/300</span>
-      </div>
-      <!-- Author and Category -->
-      <div class="form-row">
-        <input type="text" id="edit-author" placeholder="Author name" maxlength="60">
-        <input type="text" id="edit-category" placeholder="Category (optional)" maxlength="30">
-      </div>
-      <!-- Modal Actions -->
-      <div class="modal-actions">
-        <button class="modal-cancel-btn" id="modal-cancel">Cancel</button>
-        <button class="modal-save-btn" id="modal-save">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          Save Changes
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- HTML2Canvas -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
-  <!-- App Script -->
-  <script type="module" src="app.js"></script>
+  <script type="module" src="auth.js"></script>
 </body>
-
 </html>
-
-<!-- ============================================================
-  QUOTE VAULT v2
-  Author  : Hassan Javed
-  GitHub  : https://github.com/Hassanjaved17 
-  Built   : March 2026
-  Stack   : Firebase Firestore + Vanilla JS + HTML/CSS
-  © 2026 Hassan Javed — All Rights Reserved
- ============================================================ -->
+<!-- © 2026 Hassan Javed — All Rights Reserved -->

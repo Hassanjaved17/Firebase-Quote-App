@@ -1507,21 +1507,112 @@ input:focus {
   }
 }
 
+/* © 2026 Hassan Javed — All Rights Reserved */
 
-/* ── Delete Modal Box override ── */
+/* ============================================================
+   HEADER USER INFO + LOGOUT
+   ============================================================ */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
+.header-user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 212, 255, .12);
+  border: 1px solid var(--cyan-border);
+  color: var(--cyan);
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px var(--cyan-glow);
+  flex-shrink: 0;
+}
+
+.header-user-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  width: auto;
+  padding: 0 10px;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid rgba(248, 113, 113, .25);
+  border-radius: var(--radius-md);
+  color: var(--danger);
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .5px;
+  white-space: nowrap;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.header-logout-btn .spinner {
+  width: 11px;
+  height: 11px;
+  border-color: rgba(248, 113, 113, .3);
+  border-top-color: var(--danger);
+  flex-shrink: 0;
+}
+
+.header-logout-btn:hover {
+  background: rgba(248, 113, 113, .1);
+  border-color: var(--danger);
+  box-shadow: 0 0 10px rgba(248, 113, 113, .2);
+}
+
+/* Hide username on small screens, keep avatar + logout */
+@media (max-width: 520px) {
+  .header-user-name {
+    display: none;
+  }
+
+  .header-user {
+    margin-right: 10px;
+  }
+}
+
+/* ============================================================
+   DELETE CONFIRMATION MODAL
+   © 2026 Hassan Javed — All Rights Reserved
+   ============================================================ */
+
 .delete-modal-box {
   max-width: 420px;
   text-align: center;
   padding: 36px 32px;
 }
 
-/* Red top glow line — danger feel */
+/* Red top glow line */
 .delete-modal-box::before {
   background: linear-gradient(90deg, transparent, var(--danger), transparent) !important;
   opacity: .7 !important;
 }
 
-/* ── Trash icon circle ── */
+/* Trash icon circle */
 .delete-modal-icon {
   width: 64px;
   height: 64px;
@@ -1549,7 +1640,6 @@ input:focus {
   }
 }
 
-/* ── Title ── */
 .delete-modal-title {
   font-family: 'Syne', sans-serif;
   font-size: 1.2rem;
@@ -1559,7 +1649,6 @@ input:focus {
   margin-bottom: 10px;
 }
 
-/* ── Message ── */
 .delete-modal-msg {
   font-family: 'Inter', sans-serif;
   font-size: 13.5px;
@@ -1568,7 +1657,7 @@ input:focus {
   margin-bottom: 20px;
 }
 
-/* ── Quote preview snippet ── */
+/* Quote preview snippet */
 .delete-preview {
   background: rgba(248, 113, 113, 0.05);
   border: 1px solid rgba(248, 113, 113, 0.15);
@@ -1587,7 +1676,7 @@ input:focus {
   overflow: hidden;
 }
 
-/* ── Confirm delete button ── */
+/* Confirm delete button */
 .delete-confirm-btn {
   flex: 2;
   display: flex;
@@ -1619,10 +1708,8 @@ input:focus {
   transform: none;
 }
 
-/* ── Responsive ── */
 @media (max-width: 520px) {
   .delete-modal-box {
     padding: 28px 18px;
   }
 }
-/* © 2026 Hassan Javed — All Rights Reserved */

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quote Vault — Reset Password</title>
+  <link rel="icon" type="image/png" href="./images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+  <!-- Brand -->
+  <div class="auth-brand">
+    <div class="auth-brand-badge">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+    </div>
+    <div class="auth-brand-name">Quote <span>Vault</span></div>
+    <div class="auth-brand-sub">Vol. I — 2026</div>
+  </div>
+
+  <div class="auth-wrapper">
+    <div class="auth-section">
+
+      <!-- Form state -->
+      <div id="reset-form-wrap">
+        <h2>Reset Password</h2>
+        <p class="auth-subtitle">Enter your email and we'll send you a reset link.</p>
+
+        <form id="reset-form" novalidate>
+          <input type="email" id="reset-email" placeholder="Email address" autocomplete="email" required>
+          <button type="submit" id="reset-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Send Reset Link
+          </button>
+        </form>
+
+        <a href="index.html" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Back to Login
+        </a>
+      </div>
+
+      <!-- Success state -->
+      <div id="reset-success" class="reset-success" style="display:none;">
+        <div class="reset-success-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <h3 class="reset-success-title">Check your inbox</h3>
+        <p class="reset-success-msg">
+          If that email is registered, you'll receive a reset link shortly. Check your spam folder too!
+        </p>
+        <a href="index.html" class="back-link" style="margin-top: 8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Back to Login
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="auth-footer">
+    <div class="auth-footer-dot"></div>
+    <span class="auth-footer-text">© 2026 Hassan Javed — Quote Vault</span>
+    <div class="auth-footer-dot"></div>
+  </div>
+
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
+<!-- © 2026 Hassan Javed — All Rights Reserved -->
