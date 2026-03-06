@@ -44,6 +44,11 @@ const SEED_QUOTES = [
 ];
 
 // DOM refs
+const deleteModal = document.getElementById("delete-modal");
+const deletePreview = document.getElementById("delete-preview");
+const deleteModalCancel = document.getElementById("delete-modal-cancel");
+const deleteModalConfirm = document.getElementById("delete-modal-confirm");
+let deletingId = null;
 const quoteLoading = document.getElementById("quote-loading");
 const quoteContent = document.getElementById("quote-content");
 const quoteEmpty = document.getElementById("quote-empty");
@@ -468,10 +473,12 @@ function renderList() {
         });
     });
 
+
     document.querySelectorAll(".item-delete-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
             e.stopPropagation();
-            deleteQuote(btn.dataset.id);
+            const quote = allQuotes.find(q => q.id === btn.dataset.id);
+            if (quote) openDeleteModal(quote);
         });
     });
 }
@@ -530,7 +537,7 @@ async function deleteQuote(id) {
 
 deleteBtn.addEventListener("click", () => {
     const quote = allQuotes[currentIndex];
-    if (quote) deleteQuote(quote.id);
+    if (quote) openDeleteModal(quote);
 });
 
 // Like Quote Toggle
@@ -594,6 +601,48 @@ filterBtns.forEach(btn => {
         renderList();
         pickRandom();
     });
+});
+
+function openDeleteModal(quote) {
+    deletingId = quote.id;
+    // Show a preview snippet of the quote being deleted
+    deletePreview.textContent = `"${quote.text}" — ${quote.author || "Unknown"}`;
+    deleteModal.classList.add("open");
+}
+
+function closeDeleteModal() {
+    deleteModal.classList.remove("open");
+    deletingId = null;
+}
+
+// Close on overlay background click
+deleteModal.addEventListener("click", (e) => {
+    if (e.target === deleteModal) closeDeleteModal();
+});
+
+// Close on Cancel
+deleteModalCancel.addEventListener("click", closeDeleteModal);
+
+// Close on Escape key (works alongside edit modal escape)
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && deleteModal.classList.contains("open")) {
+        closeDeleteModal();
+    }
+});
+
+// Confirm delete
+deleteModalConfirm.addEventListener("click", async () => {
+    if (!deletingId) return;
+
+    const orig = deleteModalConfirm.innerHTML;
+    deleteModalConfirm.disabled = true;
+    deleteModalConfirm.innerHTML = `<span class="spinner"></span> Deleting...`;
+
+    await deleteQuote(deletingId);
+    closeDeleteModal();
+
+    deleteModalConfirm.disabled = false;
+    deleteModalConfirm.innerHTML = orig;
 });
 
 // Initial setup

@@ -247,6 +247,39 @@
       </div>
     </div>
   </div>
+
+  <div class="modal-overlay" id="delete-modal">
+  <div class="modal-box delete-modal-box">
+
+    <div class="delete-modal-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <polyline points="3 6 5 6 21 6" />
+        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+        <path d="M10 11v6M14 11v6" />
+        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+      </svg>
+    </div>
+
+    <h3 class="delete-modal-title">Delete Quote?</h3>
+    <p class="delete-modal-msg">This quote will be permanently removed from your vault. This action cannot be undone.
+    </p>
+
+    <div class="delete-preview" id="delete-preview"></div>
+
+    <div class="modal-actions">
+      <button class="modal-cancel-btn" id="delete-modal-cancel">Cancel</button>
+      <button class="delete-confirm-btn" id="delete-modal-confirm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="3 6 5 6 21 6" />
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+        </svg>
+        Yes, Delete It
+      </button>
+    </div>
+
+  </div>
+  </div>
+
   <!-- Edit Modal -->
   <div class="modal-overlay" id="edit-modal">
     <div class="modal-box">
